@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "TaskManagerApp",
-    "slug": "TaskManagerApp",
+    "name": "Kitty To Do",
+    "slug": "kitty-to-do",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "taskmanagerapp",
+    "scheme": "kittytodo",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
@@ -20,7 +20,14 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.TaskManagerApp"
+      "package": "com.kittytodo.app",
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "WAKE_LOCK",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ]
     },
     "web": {
       "output": "static",

@@ -1,34 +1,29 @@
-import React, { useState, useMemo, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  FlatList,
-  Image,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import dayjs, { Dayjs } from "dayjs";
-import { db } from "@/services/firebaseConfig";
-import { useAuth } from "@/contexts/AuthContext";
-import {
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
-  deleteDoc,
-  updateDoc,
-  onSnapshot,
-  QuerySnapshot,
-  DocumentData,
-  doc,
-  deleteField,
-} from "firebase/firestore";
 import Navbar from "@/components/Navbar";
 import { Shadows } from "@/constants/theme";
+import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/services/firebaseConfig";
+import dayjs, { Dayjs } from "dayjs";
+import {
+  addDoc,
+  collection,
+  deleteField,
+  doc,
+  DocumentData,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
+import {
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface MoodEntry {
   id?: string; // Firestore doc ID
@@ -216,15 +211,15 @@ export default function WellnessScreen() {
     return `rgb(${avgR}, ${avgG}, ${avgB})`;
   };
 
-  const getDayColor = (date: Dayjs): string => {
+  const getDayColors = (date: Dayjs): string[] => {
     const entry = getEntryForDate(date);
-    if (!entry) return "#f5f5f5";
+    if (!entry || entry.moods.length === 0) return ["#f5f5f5"];
 
     const moodColors = entry.moods
       .map((moodId) => MOODS.find((m) => m.id === moodId)?.color)
       .filter(Boolean) as string[];
 
-    return blendColors(moodColors);
+    return moodColors.length > 0 ? moodColors : ["#f5f5f5"];
   };
 
   const getIconSize = (activityCount: number): number => {
@@ -250,7 +245,7 @@ export default function WellnessScreen() {
     for (let day = 1; day <= daysInMonth; day++) {
       const date = startOfMonth.date(day);
       const isToday = date.isSame(dayjs(), "day");
-      const dayColor = getDayColor(date);
+      const dayColors = getDayColors(date);
       const entry = getEntryForDate(date);
 
       let periodBorderColor: string | undefined;
@@ -269,7 +264,6 @@ export default function WellnessScreen() {
           style={[
             styles.dayContainer,
             isToday && styles.dayContainerToday,
-            { backgroundColor: dayColor },
             periodBorderColor && {
               borderWidth: 2.5,
               borderColor: periodBorderColor,
@@ -278,9 +272,28 @@ export default function WellnessScreen() {
           ]}
           onPress={() => handleDayPress(date)}
         >
+          {/* Color Layers */}
+          <View style={styles.colorLayersContainer}>
+            {dayColors.map((color, index) => (
+              <View
+                key={`color-${index}`}
+                style={[
+                  styles.colorLayer,
+                  {
+                    backgroundColor: color,
+                    height: `${100 / dayColors.length}%`,
+                  },
+                ]}
+              />
+            ))}
+          </View>
+
+          {/* Day Number */}
           <Text style={[styles.dayNumber, isToday && styles.dayNumberToday]}>
             {day}
           </Text>
+
+          {/* Activity Icons */}
           {hasActivities ? (
             <View style={styles.iconContainer}>
               {entry &&
@@ -595,7 +608,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
     padding: 6,
+    overflow: "hidden",
     ...Shadows.small,
+  },
+  colorLayersContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: "column",
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  colorLayer: {
+    width: "100%",
   },
   dayContainerToday: {
     borderWidth: 2,
@@ -609,6 +636,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
     color: "#333",
+    zIndex: 1,
+    textShadowColor: "rgba(255, 255, 255, 0.8)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 3,
   },
   dayNumberToday: {
     color: "#007AFF",
@@ -624,6 +655,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 0.5,
     width: "100%",
+    zIndex: 1,
   },
   iconEmoji: {
     fontSize: 9,

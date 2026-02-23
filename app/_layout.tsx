@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { TasksProvider } from "@/contexts/TasksContext";
 import SignInModal from "@/components/SignInModal";
 import LoadingScreen from "@/components/LoadingScreen";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -41,10 +42,12 @@ function RootLayoutContent() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <TasksProvider>
-        <RootLayoutContent />
-      </TasksProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <TasksProvider>
+          <RootLayoutContent />
+        </TasksProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
