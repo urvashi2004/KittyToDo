@@ -1,8 +1,20 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
+import { initializeApp } from "firebase/app";
+import { getAuth, initializeAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { Platform } from "react-native";
+
+let getReactNativePersistence: any = null;
+if (Platform.OS !== "web") {
+  try {
+    const authModule = require("firebase/auth/react-native");
+    getReactNativePersistence = authModule.getReactNativePersistence;
+  } catch (e) {
+    console.warn("React Native persistence not available");
+  }
+}
 
 // Get Firebase configuration from environment variables or expo constants
 const getFirebaseConfig = () => {
@@ -62,6 +74,21 @@ try {
 
 // Initialize Firebase services
 export const db = getFirestore(app);
-export const auth = getAuth(app);
+
+let authInstance;
+
+if (Platform.OS === "web") {
+  authInstance = getAuth(app);
+} else {
+  try {
+    authInstance = initializeAuth(app, {
+      persistence: getReactNativePersistence(AsyncStorage),
+    });
+  } catch {
+    authInstance = getAuth(app);
+  }
+}
+
+export const auth = authInstance;
 
 export default app;

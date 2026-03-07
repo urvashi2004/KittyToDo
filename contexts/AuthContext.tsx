@@ -12,9 +12,11 @@ import { auth } from "@/services/firebaseConfig";
 
 // Only import GoogleSignin for native platforms
 let GoogleSignin: any = null;
+let googleStatusCodes: any = null;
 if (Platform.OS !== "web") {
   const RNGoogleSignin = require("@react-native-google-signin/google-signin");
   GoogleSignin = RNGoogleSignin.GoogleSignin;
+  googleStatusCodes = RNGoogleSignin.statusCodes;
 }
 
 interface AuthContextType {
@@ -53,9 +55,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // Configure Google Sign-In for native platforms only
     if (GoogleSignin) {
+      if (!process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID) {
+        console.error("EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is not set");
+      }
+
       GoogleSignin.configure({
         webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
-        offlineAccess: true,
+        scopes: ["profile", "email"],
+        offlineAccess: false,
       });
     }
 
@@ -90,14 +97,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           showPlayServicesUpdateDialog: true,
         });
 
-        // Get user info from Google
-        const userInfo = await GoogleSignin.signIn();
+        const signInResponse = await GoogleSignin.signIn();
 
-        // Get the ID token
-        const idToken = userInfo.data?.idToken;
+        // Newer versions can return different response shapes
+        const idToken =
+          signInResponse?.data?.idToken ?? signInResponse?.idToken ?? null;
 
         if (!idToken) {
-          throw new Error("Failed to get ID token from Google Sign-In");
+          throw new Error(
+            "Google Sign-In did not return an ID token. Check Firebase Google auth setup (Web client ID + Android SHA keys).",
+          );
         }
 
         // Create a Google credential with the token
@@ -109,9 +118,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log("Successfully signed in with Google (native)");
       }
     } catch (err: any) {
+      if (googleStatusCodes?.SIGN_IN_CANCELLED && err?.code === googleStatusCodes.SIGN_IN_CANCELLED) {
+        setError(null);
+        return;
+      }
+
+      const code = err?.code ? ` (${err.code})` : "";
+      const message =
+        err?.message ||
+        `Failed to sign in with Google${code}. Ensure Google provider is enabled in Firebase and SHA fingerprints are added for Android.`;
+
       console.error("Google Sign-In Error:", err);
-      setError(err.message || "Failed to sign in with Google");
-      throw err;
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
