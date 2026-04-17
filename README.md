@@ -2,6 +2,10 @@
 
 A delightful task management app with a cute cat theme! Built with [Expo](https://expo.dev) and React Native.
 
+<p align="center">
+   <img src="assets/images/icon.png" alt="Kitty To Do app logo" width="180" />
+</p>
+
 ## Quick Start
 
 1. Install dependencies:
