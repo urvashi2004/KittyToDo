@@ -1,6 +1,10 @@
-# Kitty To Do 🐱✅
+# Kitty To Do 🐱
 
 A delightful task management app with a cute cat theme! Built with [Expo](https://expo.dev) and React Native.
+
+<p align="center">
+   <img src="assets/images/icon.png" alt="Kitty To Do app logo" width="180" />
+</p>
 
 ## Quick Start
 
@@ -10,27 +14,75 @@ A delightful task management app with a cute cat theme! Built with [Expo](https:
    npm install
    ```
 
-2. Start the app:
+2. Create your environment file from the template:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   On Windows PowerShell:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+3. Fill `.env` with your Firebase + Google credentials.
+
+4. Start the app:
 
    ```bash
    npx expo start
    ```
 
-3. Choose how to run:
+5. Choose how to run:
    - [Development build](https://docs.expo.dev/develop/development-builds/introduction/)
    - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
    - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
    - [Expo Go](https://expo.dev/go) - Limited sandbox for app testing
 
+## App Screenshots
+
+### Preview
+
+<table>
+   <tr>
+      <td><img src="assets/screenshots/today.jpeg" alt="Today" width="250" /></td>
+      <td><img src="assets/screenshots/to-do.jpeg" alt="To Do" width="250" /></td>
+      <td><img src="assets/screenshots/calender.jpeg" alt="Calendar" width="250" /></td>
+   </tr>
+   <tr>
+      <td><img src="assets/screenshots/wellness.jpeg" alt="Wellness" width="250" /></td>
+      <td><img src="assets/screenshots/notask.jpeg" alt="No Task State" width="250" /></td>
+      <td></td>
+   </tr>
+</table>
+
 You can start developing by editing files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
 ---
 
-## 📋 Setup Guide
+## Setup Guide
 
 ### Environment Variables Setup
 
-Your app uses environment variables to securely store Firebase credentials and Google OAuth configuration. This keeps sensitive data out of your source code.
+Use environment variables to securely store Firebase credentials and Google OAuth configuration.
+
+#### Recommended Setup Flow
+
+1. Copy the template file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   On Windows PowerShell:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+2. Replace placeholder values in `.env` with your real project credentials.
+3. Restart Expo after updating env values.
 
 #### Getting Your Credentials
 
@@ -48,31 +100,26 @@ Your app uses environment variables to securely store Firebase credentials and G
 1. In **Project Settings** → **"OAuth consent screen"** → **"Credentials"**
 2. Find your Web Client ID (looks like: `123456789-abc123.apps.googleusercontent.com`)
 
-#### Creating Your `.env` File
+#### `.env` Variables Required
 
-Create a `.env` file in your project root and fill in your actual credentials:
+The required keys are already listed in `.env.example`:
 
-```env
-# Firebase Configuration
-EXPO_PUBLIC_FIREBASE_API_KEY=AIzaSyDxxx...
-EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=yourproject.firebaseapp.com
-EXPO_PUBLIC_FIREBASE_PROJECT_ID=yourproject
-EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=yourproject.appspot.com
-EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
-EXPO_PUBLIC_FIREBASE_APP_ID=1:123456789:web:abcd1234efgh5678
-EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=G-ABCD1234EF
+- `EXPO_PUBLIC_FIREBASE_API_KEY`
+- `EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `EXPO_PUBLIC_FIREBASE_PROJECT_ID`
+- `EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `EXPO_PUBLIC_FIREBASE_APP_ID`
+- `EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID`
+- `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`
 
-# Google Sign-In
-EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=123456789-abc123.apps.googleusercontent.com
-```
-
-**Note:** The `.env` file is added to `.gitignore` and should never be committed to git. Use `.env.example` as a template for team members.
+**Note:** `.env` should never be committed to git. Keep using `.env.example` as the shared template.
 
 **Important:** All variables must start with `EXPO_PUBLIC_` to be accessible in your Expo app!
 
 #### Security Best Practices
 
-✅ **DO:**
+**DO:**
 
 - Keep `.env` on your local machine only
 - Add `.env` to `.gitignore` (already done)
@@ -80,7 +127,7 @@ EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=123456789-abc123.apps.googleusercontent.com
 - Use different Firebase projects for dev/prod
 - Rotate keys periodically
 
-❌ **DON'T:**
+**DON'T:**
 
 - Commit `.env` to git
 - Share your actual `.env` file
@@ -100,7 +147,7 @@ EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=123456789-abc123.apps.googleusercontent.com
 
 ---
 
-### 🔐 Google OAuth & Firebase Setup
+### Google OAuth & Firebase Setup
 
 Google OAuth has been integrated into your Kitty To Do app. Users will see a sign-in modal when the app loads if they're not authenticated.
 
@@ -157,12 +204,12 @@ Google OAuth has been integrated into your Kitty To Do app. Users will see a sig
 
 #### Features Implemented
 
-✅ **Sign-In Modal** - Appears automatically when app loads if not authenticated
-✅ **Auth Context** - Manages authentication state globally with `useAuth()` hook
-✅ **Sign-Out Feature** - Sign-out button in the Tasks screen header with confirmation
-✅ **Protected Routes** - App content only accessible after authentication
-✅ **Loading Screen** - Shows while checking authentication state with cat animation
-✅ **Error Handling** - User-friendly error messages during sign-in
+- **Sign-In Modal** - Appears automatically when app loads if not authenticated
+- **Auth Context** - Manages authentication state globally with `useAuth()` hook
+- **Sign-Out Feature** - Sign-out button in the Tasks screen header with confirmation
+- **Protected Routes** - App content only accessible after authentication
+- **Loading Screen** - Shows while checking authentication state with cat animation
+- **Error Handling** - User-friendly error messages during sign-in
 
 #### Testing Authentication
 
@@ -208,207 +255,7 @@ Google OAuth has been integrated into your Kitty To Do app. Users will see a sig
 
 ---
 
-## 🎨 App Logo & Branding
-
-Your app name has been updated to **"Kitty To Do"** throughout:
-
-- **app.json** - Display name and slug
-- **package.json** - Package name
-- **Android Package ID** - `com.kittytodo.app`
-- **URL Scheme** - `kittytodo`
-
-### Creating Your App Logo
-
-You have several cat images in `assets/animals/` that can be used for your logo:
-
-- `WorkingCat.jpg` - Professional looking cat
-- `SusCat.jpg` - Cute/funny cat
-- `ExerciseCat.jpg` - Active cat
-
-#### Quick Start with Icon Generator
-
-1. Choose your cat image from `assets/animals/`
-2. Go to [App Icon Generator](https://www.appicon.co/)
-3. Upload your cat image
-4. Download all generated icons
-5. Replace these files in `assets/images/`:
-   ```
-   icon.png (1024x1024) - Main iOS icon
-   android-icon-foreground.png (432x432) - Android foreground
-   android-icon-background.png (432x432) - Android background
-   android-icon-monochrome.png (432x432) - Android monochrome
-   splash-icon.png (200x200) - Splash screen icon
-   favicon.png (48x48) - Web favicon
-   ```
-
-#### Design Suggestions
-
-**Logo Concept Ideas:**
-
-1. **Cat with Checklist** - A cute cat holding or sitting next to a checklist with checkmarks visible
-2. **Cat Paw with Check** - A cat paw print with a checkmark - simple and recognizable
-3. **Working Cat** - Use your `WorkingCat.jpg` with a blue background and small checklist icon overlay
-4. **Minimalist Cat Face** - Simple cat face outline with checklist pattern in background
-
-**Recommended Color Scheme:**
-
-- Primary: #007AFF (iOS Blue)
-- Background: #E6F4FE (Light Blue)
-- Accent: #FFFFFF (White)
-- Text: #333333 (Dark Gray)
-
-#### After Creating Icons
-
-1. Replace the icon files in `assets/images/`
-2. Clear cache and prebuild:
-   ```bash
-   npx expo prebuild --clean
-   ```
-3. Rebuild your app:
-
-   ```bash
-   # For EAS Build (Recommended)
-   eas build --platform android --profile preview
-
-   # For local build
-   cd android
-   ./gradlew clean
-   ./gradlew assembleRelease
-   ```
-
-#### Icon Checklist
-
-- [ ] Create main icon (1024x1024)
-- [ ] Create Android foreground icon (432x432)
-- [ ] Create Android background icon (432x432)
-- [ ] Create Android monochrome icon (432x432)
-- [ ] Create splash icon (200x200)
-- [ ] Create favicon (48x48)
-- [ ] Replace files in `assets/images/`
-- [ ] Test in Expo Go
-- [ ] Rebuild APK
-- [ ] Test on device
-
----
-
-## 📱 MIUI Device Troubleshooting
-
-### Issues Fixed
-
-1. ✅ **Added Error Boundary** - Catches and displays startup errors instead of blank screen crashes
-2. ✅ **Improved Firebase Configuration** - Validates missing environment variables with detailed error logging
-3. ✅ **Added Android Permissions** - INTERNET, ACCESS_NETWORK_STATE, WAKE_LOCK, RECEIVE_BOOT_COMPLETED, VIBRATE
-
-### MIUI-Specific Settings
-
-After installing the APK on a MIUI device, you MUST configure these settings:
-
-#### A. Allow Autostart
-
-1. Go to **Settings** > **Apps** > **Manage Apps**
-2. Find **Kitty To Do**
-3. Tap on **Autostart** and enable it
-
-#### B. Disable Battery Saver
-
-1. Go to **Settings** > **Apps** > **Manage Apps**
-2. Find **Kitty To Do**
-3. Tap on **Battery saver** > Select **No restrictions**
-
-#### C. Grant All Permissions
-
-1. Go to **Settings** > **Apps** > **Manage Apps**
-2. Find **Kitty To Do**
-3. Tap on **App permissions**
-4. Allow all requested permissions
-
-#### D. Background Activity
-
-1. In the same app settings page
-2. Enable **Display pop-up windows while running in the background**
-
-#### E. Privacy Protection (MIUI 12+)
-
-1. Go to Settings > **Privacy Protection**
-2. Find **Kitty To Do** and allow all permissions
-
-#### F. Lock App in Recents (Optional)
-
-1. Swipe up to open Recent Apps
-2. Swipe down on Kitty To Do to lock it
-3. This prevents MIUI from aggressively closing it
-
-### Common MIUI Issues and Solutions
-
-**App still crashes immediately**
-
-- Go to Settings > Privacy Protection
-- Find Kitty To Do and allow all permissions
-- Restart the app
-
-**Firebase not connecting**
-
-- Ensure you have internet connection
-- Check Firebase console to verify your app is registered
-- Verify your Firebase config values in `.env` are correct
-- Check that you've verified your email in Firebase
-
-**Google Sign-In not working**
-
-- Verify you have Play Services installed on your device
-- Check that your SHA-1 fingerprint is added to Firebase
-- Ensure Google Sign-In is enabled in Firebase Console
-- Try clearing app cache: Settings > Apps > Kitty To Do > Storage > Clear Cache
-
-**App works but closes in background**
-
-- Follow section B above to disable battery restrictions
-- Enable Autostart (section A)
-- Lock the app in Recent Apps (section F)
-
-**App shows blank screen then closes**
-
-- Check the error boundary message if it appears
-- Verify your Firebase configuration in `.env`
-- Ensure internet connection is working
-
-### Debug Mode
-
-To see detailed logs:
-
-1. Connect your device via USB
-2. Enable USB Debugging: Settings > Developer Options > USB Debugging
-3. Install ADB if you haven't already
-4. Run: `adb logcat | grep -i "KittyToDo\|Firebase\|Google"`
-
-This will show you any error messages in real-time.
-
-### Common Error Messages and Fixes
-
-- **"Firebase configuration is incomplete"** → Check your environment variables in `.env`
-- **"Google Sign-In not available"** → Install or update Google Play Services
-- **"Network request failed"** → Check internet permission and connection
-- **"hasPlayServices"** → Update Google Play Services on your device
-- **"Failed to get ID token"** → Verify your Google Web Client ID is correct
-- **"NETWORK_ERROR"** → Check that your device has internet access
-
-### Getting SHA-1 Fingerprint for Google Sign-In
-
-For your APK to work with Google Sign-In on MIUI:
-
-```bash
-# For debug builds
-keytool -list -v -keystore android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android
-
-# For release builds (if you have a keystore)
-keytool -list -v -keystore your-release-key.keystore -alias your-key-alias
-```
-
-Add the SHA-1 fingerprint to your Firebase project settings in the Android app configuration.
-
----
-
-## 📦 Building APK
+## Building APK
 
 ### For Testing (Preview)
 
@@ -435,7 +282,7 @@ The APK will be generated at: `android/app/build/outputs/apk/release/app-release
 
 ---
 
-## 📚 Learn More
+## Learn More
 
 To learn more about developing your project with Expo:
 
@@ -447,7 +294,7 @@ To learn more about developing your project with Expo:
 
 ---
 
-## 🔄 Fresh Project
+## Fresh Project
 
 When you're ready to start fresh, run:
 
@@ -459,21 +306,21 @@ This command will move the starter code to the **app-example** directory and cre
 
 ---
 
-## 🎯 Project Features
+## Project Features
 
-- ✅ **Google Authentication** - Sign in with Google using Firebase
-- ✅ **Task Management** - Create, update, and delete tasks
-- ✅ **Mood Tracker** - Track your daily moods with color-coded calendar
-- ✅ **Activity Logging** - Log activities and wellness data
-- ✅ **Real-time Sync** - Data synced to Firebase Firestore
-- ✅ **Error Boundary** - Graceful error handling with user feedback
-- ✅ **MIUI Optimization** - Tested and optimized for MIUI devices
-- ✅ **Responsive Design** - Works on phones and tablets
-- ✅ **Beautiful UI** - Modern design with cat-themed branding
+- **Google Authentication** - Sign in with Google using Firebase
+- **Task Management** - Create, update, and delete tasks
+- **Mood Tracker** - Track your daily moods with color-coded calendar
+- **Activity Logging** - Log activities and wellness data
+- **Real-time Sync** - Data synced to Firebase Firestore
+- **Error Boundary** - Graceful error handling with user feedback
+- **MIUI Optimization** - Tested and optimized for MIUI devices
+- **Responsive Design** - Works on phones and tablets
+- **Beautiful UI** - Modern design with cat-themed branding
 
 ---
 
-## 📞 Support
+## Support
 
 If you need help or have issues:
 
